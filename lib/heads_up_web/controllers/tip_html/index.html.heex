@@ -1,0 +1,9 @@
+<div>
+  <h1>Safety Tips</h1>
+  <ol>
+    <li :for={tip <- @tips}>
+      <a href={~p"/tips/#{tip.id}"}>{tip.text}</a>
+    </li>
+  </ol>
+  <p>{@emojis}</p>
+</div>

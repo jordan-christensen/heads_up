@@ -15,19 +15,23 @@ defmodule HeadsUpWeb.Router do
     plug :accepts, ["json"]
   end
 
+  def snoop(conn, _opts) do
+    answer = ~w(Yes No Maybe) |> Enum.random()
+
+    conn = assign(conn, :answer, answer)
+
+    # IO.inspect(conn)
+
+    conn
+  end
+
   scope "/", HeadsUpWeb do
     pipe_through :browser
 
     get "/", PageController, :home
-
-  end
-
-  defp snoop(conn, _opts) do
-    answer = ~w(Yes No Maybe) |> Enum.random()
-
-    conn = assign(conn, :answer, answer) |> IO.inspect(label: "CONN!:")
-
-    conn
+    get "/tips", TipController, :index
+    get "/tips/:id", TipController, :show
+    live "/effort", EffortLive
   end
 
   # Other scopes may use custom stacks.
