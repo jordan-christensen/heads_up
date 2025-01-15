@@ -20,8 +20,6 @@ defmodule HeadsUpWeb.Router do
 
     conn = assign(conn, :answer, answer)
 
-    # IO.inspect(conn)
-
     conn
   end
 
