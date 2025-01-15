@@ -2,17 +2,13 @@ defmodule HeadsUpWeb.EffortLive do
   use HeadsUpWeb, :live_view
 
   def mount(_params, _session, socket) do
-    IO.inspect(self(), label: "MOUNT")
-
-    socket =
-      socket
-      |> assign(responders: 0, minutes_per_responder: 10)
-
+    # IO.inspect(self(), label: "MOUNT")
+    socket = assign(socket, responders: 0, minutes_per_responder: 10)
     {:ok, socket}
   end
 
   def render(assigns) do
-    IO.inspect(self(), label: "RENDER")
+    # IO.inspect(self(), label: "RENDER")
     ~H"""
     <div class="effort">
       <h1>Community Love</h1>
@@ -30,20 +26,29 @@ defmodule HeadsUpWeb.EffortLive do
           {@responders * @minutes_per_responder}
         </div>
       </section>
+      <form phx-submit="recalculate">
+        <label>Minutes Per Responder:</label>
+        <input type="number" name="minutes" value={@minutes_per_responder} />
+      </form>
     </div>
     """
   end
 
   def handle_event("add", %{"quantity" => quantity}, socket) do
-    IO.inspect(self(), label: "HANDLE EVENT")
+    # IO.inspect(self(), label: "HANDLE EVENT")
 
-    raise "💥"
+    # raise "💥"
 
     socket =
       update(socket, :responders, fn current_quantity ->
         current_quantity + String.to_integer(quantity)
       end)
 
+    {:noreply, socket}
+  end
+
+  def handle_event("recalculate", %{"minutes" => minutes}, socket) do
+    socket = assign(socket, :minutes_per_responder, String.to_integer(minutes))
     {:noreply, socket}
   end
 end
